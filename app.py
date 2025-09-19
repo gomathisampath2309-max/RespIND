@@ -105,11 +105,14 @@ if len(table) > 0:
     ws.title = "Report"
 
     thin = Side(border_style="thin", color="000000")
+    border = Border(top=thin, left=thin, right=thin, bottom=thin)
 
-    # Header row 1
+    # Header row 1 (merged)
     ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=table.shape[1])
-    ws.cell(row=1, column=1, value="RespIndNet_Study Specimen Transfer Form (Virology)").font = Font(bold=True)
-    ws.cell(row=1, column=1).alignment = Alignment(horizontal="center", vertical="center")
+    cell = ws.cell(row=1, column=1, value="RespIndNet_Study Specimen Transfer Form (Virology)")
+    cell.font = Font(bold=True)
+    cell.alignment = Alignment(horizontal="center", vertical="center")
+    cell.border = border
 
     # Extra span row (row 2)
     spans = [
@@ -125,22 +128,28 @@ if len(table) > 0:
         cell = ws.cell(row=2, column=start_col, value=val)
         cell.font = Font(bold=True)
         cell.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
+        # Apply border to merged range
+        for row in range(2, 3):
+            for col in range(start_col, end_col+1):
+                ws.cell(row=row, column=col).border = border
         start_col = end_col + 1
 
     # Column headers (row 3)
-    for j, col in enumerate(table.columns, 1):
-        c = ws.cell(row=3, column=j, value=col)
+    for j, col_name in enumerate(table.columns, 1):
+        c = ws.cell(row=3, column=j, value=col_name)
         c.font = Font(bold=True)
         c.alignment = Alignment(horizontal="center", vertical="center")
+        c.border = border
 
-    # Data
+    # Data rows
     for i, row in table.iterrows():
         for j, val in enumerate(row, 1):
             c = ws.cell(row=i+4, column=j, value=val)
             c.alignment = Alignment(horizontal="center", vertical="center")
-            c.border = Border(top=thin, left=thin, right=thin, bottom=thin)
+            c.border = border
 
     # Save to memory for download
+    from io import BytesIO
     buffer = BytesIO()
     wb.save(buffer)
     buffer.seek(0)
@@ -151,3 +160,4 @@ if len(table) > 0:
         file_name=excel_filename,
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
+
