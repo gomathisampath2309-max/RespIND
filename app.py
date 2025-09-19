@@ -105,32 +105,19 @@ if len(table) > 0:
     ws.title = "Report"
 
     thin = Side(border_style="thin", color="000000")
-    border = Border(top=thin, left=thin, right=thin, bottom=thin)
 
-    # Header row 1 (merged)
+    # Header row 1
     ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=table.shape[1])
-    cell = ws.cell(row=1, column=1, value="RespIndNet_Study Specimen Transfer Form (Virology)")
-    cell.font = Font(bold=True)
-    cell.alignment = Alignment(horizontal="center", vertical="center")
-    cell.border = border
+    ws.cell(row=1, column=1, value="RespIndNet_Study Specimen Transfer Form (Virology)").font = Font(bold=True)
+    ws.cell(row=1, column=1).alignment = Alignment(horizontal="center", vertical="center")
 
-    # Extra span row (row 2) with 4 spans
+    # Extra span row (row 2)
     spans = [
         "Sample Shipment Date and Time:",
         "Field Manager Sign/Initials:",
-        "Virology Staff Sign/Initials: To be filled by Virology",
-        "Extra Notes / Remarks"
+        "Virology Staff Sign/Initials: To be filled by Virology"
     ]
-
-    # Calculate columns for each span
-    total_cols = table.shape[1]
-    col_split = [
-        total_cols // 5,   # first span
-        total_cols // 5,   # second span
-        total_cols // 5,   # third span
-        total_cols - 3*(total_cols // 5) + 1  # last span ends 1 column later
-    ]
-
+    col_split = [table.shape[1]//4, table.shape[1]//4, table.shape[1] - 2*(table.shape[1]//4)]
     start_col = 1
     for i, val in enumerate(spans):
         end_col = start_col + col_split[i] - 1
@@ -138,29 +125,22 @@ if len(table) > 0:
         cell = ws.cell(row=2, column=start_col, value=val)
         cell.font = Font(bold=True)
         cell.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
-        # Apply border to merged range
-        for row in range(2, 3):
-            for col in range(start_col, end_col+1):
-                ws.cell(row=row, column=col).border = border
         start_col = end_col + 1
 
-
     # Column headers (row 3)
-    for j, col_name in enumerate(table.columns, 1):
-        c = ws.cell(row=3, column=j, value=col_name)
+    for j, col in enumerate(table.columns, 1):
+        c = ws.cell(row=3, column=j, value=col)
         c.font = Font(bold=True)
         c.alignment = Alignment(horizontal="center", vertical="center")
-        c.border = border
 
-    # Data rows
+    # Data
     for i, row in table.iterrows():
         for j, val in enumerate(row, 1):
             c = ws.cell(row=i+4, column=j, value=val)
             c.alignment = Alignment(horizontal="center", vertical="center")
-            c.border = border
+            c.border = Border(top=thin, left=thin, right=thin, bottom=thin)
 
     # Save to memory for download
-    from io import BytesIO
     buffer = BytesIO()
     wb.save(buffer)
     buffer.seek(0)
@@ -171,4 +151,3 @@ if len(table) > 0:
         file_name=excel_filename,
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-
