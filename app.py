@@ -134,9 +134,9 @@ if len(table) > 0:
                 ws.cell(row=row, column=col).border = border
         start_col = end_col + 1
 
-    # Column headers (row 3)
+    # Column headers (row 4)
     for j, col_name in enumerate(table.columns, 1):
-        c = ws.cell(row=3, column=j, value=col_name)
+        c = ws.cell(row=4, column=j, value=col_name)
         c.font = Font(bold=True)
         c.alignment = Alignment(horizontal="center", vertical="center")
         c.border = border
