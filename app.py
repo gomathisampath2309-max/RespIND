@@ -114,13 +114,23 @@ if len(table) > 0:
     cell.alignment = Alignment(horizontal="center", vertical="center")
     cell.border = border
 
-    # Extra span row (row 2)
+    # Extra span row (row 2) with 4 spans
     spans = [
         "Sample Shipment Date and Time:",
         "Field Manager Sign/Initials:",
-        "Virology Staff Sign/Initials: To be filled by Virology"
+        "Virology Staff Sign/Initials: To be filled by Virology",
+        "Extra Notes / Remarks"
     ]
-    col_split = [table.shape[1]//4, table.shape[1]//4, table.shape[1] - 2*(table.shape[1]//4)]
+
+    # Calculate columns for each span
+    total_cols = table.shape[1]
+    col_split = [
+        total_cols // 5,   # first span
+        total_cols // 5,   # second span
+        total_cols // 5,   # third span
+        total_cols - 3*(total_cols // 5) + 1  # last span ends 1 column later
+    ]
+
     start_col = 1
     for i, val in enumerate(spans):
         end_col = start_col + col_split[i] - 1
@@ -134,9 +144,10 @@ if len(table) > 0:
                 ws.cell(row=row, column=col).border = border
         start_col = end_col + 1
 
-    # Column headers (row 4)
+
+    # Column headers (row 3)
     for j, col_name in enumerate(table.columns, 1):
-        c = ws.cell(row=4, column=j, value=col_name)
+        c = ws.cell(row=3, column=j, value=col_name)
         c.font = Font(bold=True)
         c.alignment = Alignment(horizontal="center", vertical="center")
         c.border = border
