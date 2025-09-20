@@ -121,7 +121,15 @@ if len(table) > 0:
         "Virology Staff Sign/Initials:",
         "To be filled by Virology"
     ]
-    col_split = [table.shape[1]//4, table.shape[1]//4, table.shape[1] - 2*(table.shape[1]//4)]
+
+    # Fixed: 4 widths instead of 3
+    col_split = [
+        table.shape[1] // 4,
+        table.shape[1] // 4,
+        table.shape[1] // 4,
+        table.shape[1] - 3 * (table.shape[1] // 4)
+    ]
+
     start_col = 1
     for i, val in enumerate(spans):
         end_col = start_col + col_split[i] - 1
@@ -134,6 +142,7 @@ if len(table) > 0:
             for col in range(start_col, end_col+1):
                 ws.cell(row=row, column=col).border = border
         start_col = end_col + 1
+
 
     # Column headers (row 3)
     for j, col_name in enumerate(table.columns, 1):
