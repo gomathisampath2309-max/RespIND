@@ -118,7 +118,8 @@ if len(table) > 0:
     spans = [
         "Sample Shipment Date and Time:",
         "Field Manager Sign/Initials:",
-        "Virology Staff Sign/Initials: To be filled by Virology"
+        "Virology Staff Sign/Initials:",
+        "To be filled by Virology"
     ]
     col_split = [table.shape[1]//4, table.shape[1]//4, table.shape[1] - 2*(table.shape[1]//4)]
     start_col = 1
