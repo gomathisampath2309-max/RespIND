@@ -76,17 +76,17 @@ merged["VOLUME (FIELD)"] = np.where(merged["type_of_sample"] == "Blood", merged[
 table = pd.DataFrame({
     "S.NO": range(1, len(merged) + 1),
     "BARCODE ID": merged["barcode_id"],
-    "DATE (DD-MM-YYYY)": merged["submissiondate"].dt.strftime("%d-%m-%Y"),
+    "DATE": merged["submissiondate"].dt.strftime("%d-%m-%Y"),
     "SAMPLE TYPE": merged["type_of_sample"],
-    "SAMPLE SEQUENCE": merged["sample_sequence"],
+    "SAMPLE PER IND": merged["sample_sequence"],
     "IND ID": merged.get("child_id", ""),
     "NAME": "Mrs. " + merged["mo_name"].astype(str) + "'s Baby",
     "AGE": merged["AGE"],
-    "SAMPLE COLLECTION DATE/TIME": merged["submissiondate"],
+    "S.C DATE/TIME": merged["submissiondate"],
     "VOLUME (FIELD)": merged["VOLUME (FIELD)"],
     "RECEIVED BY": "",
-    "VOLUME (VIROLOGY)": "",
-    "REMARKS (LYSED/ LIPEMIC/ ICTERIC / SAMPLE SPILLAGE)": ""
+    "VOLUME (VIRO)": "",
+    "REMARKS (LYSED/LIPEMIC/ICTERIC/SAMPLE SPILLAGE)": ""
 })
 
 st.subheader("📋 Generated Table")
@@ -112,21 +112,27 @@ if len(table) > 0:
     cell = ws.cell(row=1, column=1, value="RespIndNet_Study Specimen Transfer Form (Virology)")
     cell.font = Font(bold=True)
     cell.alignment = Alignment(horizontal="center", vertical="center")
-    cell.border = border
+
+    # Apply border to all cells in the merged header row
+    for col in range(1, table.shape[1] + 1):
+        ws.cell(row=1, column=col).border = border
+
 
     # Extra span row (row 2)
     spans = [
         "Sample Shipment Date and Time:",
         "Field Manager Sign/Initials:",
         "Virology Staff Sign/Initials:",
+        "",
         "To be filled by Virology"
     ]
 
-    # Fixed: 4 widths instead of 3
+    # Fixed: 5 widths instead of 4
     col_split = [
         table.shape[1] // 4,
         table.shape[1] // 4,
         table.shape[1] // 4,
+        table.shape[1] - 3 * (table.shape[1] // 4),
         table.shape[1] - 3 * (table.shape[1] // 4)
     ]
 
@@ -138,7 +144,7 @@ if len(table) > 0:
         cell.font = Font(bold=True)
         cell.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
         # Apply border to merged range
-        for row in range(2, 3):
+        for row in range(2, 4):
             for col in range(start_col, end_col+1):
                 ws.cell(row=row, column=col).border = border
         start_col = end_col + 1
