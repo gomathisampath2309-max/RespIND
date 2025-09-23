@@ -108,55 +108,77 @@ if len(table) > 0:
     border = Border(top=thin, left=thin, right=thin, bottom=thin)
 
     # Header row 1 (merged)
+    #ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=table.shape[1])
+    #cell = ws.cell(row=1, column=1, value="RespIndNet_Study Specimen Transfer Form (Virology)")
+    #cell.font = Font(bold=True)
+    #cell.alignment = Alignment(horizontal="center", vertical="center")
+    #cell.border = border
+
+    # Define border style
+    thin_border = Border(
+        left=Side(style="thin"),
+        right=Side(style="thin"),
+        top=Side(style="thin"),
+        bottom=Side(style="thin")
+    )
+
+    # Merge header row
     ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=table.shape[1])
     cell = ws.cell(row=1, column=1, value="RespIndNet_Study Specimen Transfer Form (Virology)")
     cell.font = Font(bold=True)
     cell.alignment = Alignment(horizontal="center", vertical="center")
-    cell.border = border
+
+    # Apply border to all cells in merged range
+    for col in range(1, table.shape[1] + 1):
+        ws.cell(row=1, column=col).border = thin_border
 
     # Extra span row (row 2)
     spans = [
-        "Sample Shipment Date and Time:",
-        "Field Manager Sign/Initials:",
-        "Virology Staff Sign/Initials:",
-        "To be filled by Virology"
-    ]
+    "Sample Shipment Date and Time:",
+    "Field Manager Sign/Initials:",
+    "Virology Staff Sign/Initials:",
+    "",   # empty span
+    "To be filled by Virology"
+]
 
-    # Fixed: 4 widths instead of 3
-    col_split = [
-    table.shape[1] // 4,                # span 1
-    table.shape[1] // 4,                # span 2
-    (table.shape[1] // 4) + 2,          # span 3 (increased size by +2)
-    table.shape[1] - (2 * (table.shape[1] // 4) + (table.shape[1] // 4 + 2))  # span 4 (remaining)
-    ]
+# Split table width into 5 parts
+col_split = [
+    table.shape[1] // 5,
+    table.shape[1] // 5,
+    table.shape[1] // 5,
+    table.shape[1] // 5,   # empty span width
+    table.shape[1] - 4 * (table.shape[1] // 5)   # remaining for last span
+]
 
+start_col = 1
+for i, val in enumerate(spans):
+    end_col = start_col + col_split[i] - 1
+    ws.merge_cells(start_row=2, start_column=start_col, end_row=2, end_column=end_col)
+    cell = ws.cell(row=2, column=start_col, value=val if val else None)  # leave empty span blank
+    cell.font = Font(bold=True)
+    cell.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
+    # Apply border to merged range
+    for row in range(2, 3):
+        for col in range(start_col, end_col + 1):
+            ws.cell(row=row, column=col).border = border
+    start_col = end_col + 1
 
-    start_col = 1
-    for i, val in enumerate(spans):
-        end_col = start_col + col_split[i] - 1
-        ws.merge_cells(start_row=2, start_column=start_col, end_row=2, end_column=end_col)
-        cell = ws.cell(row=2, column=start_col, value=val)
-        cell.font = Font(bold=True)
-        cell.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
-        # Apply border to merged range
-        for row in range(2, 3):
-            for col in range(start_col, end_col+1):
-                ws.cell(row=row, column=col).border = border
-        start_col = end_col + 1
+    # Force row 2 height bigger so wrapped text is visible
+    ws.row_dimensions[2].height = 30
 
 
     # Column headers (row 3)
     for j, col_name in enumerate(table.columns, 1):
         c = ws.cell(row=3, column=j, value=col_name)
         c.font = Font(bold=True)
-        c.alignment = Alignment(horizontal="center", vertical="center")
+        c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
         c.border = border
 
     # Data rows
     for i, row in table.iterrows():
         for j, val in enumerate(row, 1):
             c = ws.cell(row=i+4, column=j, value=val)
-            c.alignment = Alignment(horizontal="center", vertical="center")
+            c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
             c.border = border
 
     # Save to memory for download
