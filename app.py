@@ -145,9 +145,6 @@ for i, val in enumerate(spans):
             ws.cell(row=row, column=col).border = border
     start_col = end_col + 1
 
-    # Force row 2 height bigger so wrapped text is visible
-    ws.row_dimensions[2].height = 30
-
 
     # Column headers (row 3)
     for j, col_name in enumerate(table.columns, 1):
