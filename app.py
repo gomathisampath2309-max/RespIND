@@ -76,11 +76,10 @@ merged["VOLUME (FIELD)"] = np.where(merged["type_of_sample"] == "Blood", merged[
 table = pd.DataFrame({
     "S.NO": range(1, len(merged) + 1),
     "BARCODE ID": merged["barcode_id"],
-    "DATE": merged["submissiondate"].dt.strftime("%d-%m-%Y"),
     "S.TYPE": merged["type_of_sample"],
     "S.PER IND": merged["sample_sequence"],
     "IND ID": merged.get("child_id", ""),
-    "NAME": "Mrs." + merged["mo_name"].astype(str) + "'s B",
+    "NAME": "Mrs." + merged["mo_name"].astype(str) + "'s Baby",
     "AGE": merged["AGE"],
     "S.C DATE/TIME": merged["submissiondate"],
     "VOL(FIELD)": merged["VOLUME (FIELD)"],
