@@ -78,7 +78,7 @@ table = pd.DataFrame({
     "BARCODE ID": merged["barcode_id"],
     "DATE": merged["submissiondate"].dt.strftime("%d-%m-%Y"),
     "SAMPLE TYPE": merged["type_of_sample"],
-    "SAMPLE PER IND": merged["sample_sequence"],
+    "S. PER IND": merged["sample_sequence"],
     "IND ID": merged.get("child_id", ""),
     "NAME": "Mrs. " + merged["mo_name"].astype(str) + "'s Baby",
     "AGE": merged["AGE"],
@@ -131,7 +131,7 @@ if len(table) > 0:
         table.shape[1] // 4,
         table.shape[1] // 4,
         table.shape[1] - 3 * (table.shape[1] // 4),
-        table.shape[1] // 4
+        table.shape[1] - 1 * (table.shape[1] // 4)
     ]
 
     start_col = 1
@@ -159,7 +159,7 @@ if len(table) > 0:
     for i, row in table.iterrows():
         for j, val in enumerate(row, 1):
             c = ws.cell(row=i+4, column=j, value=val)
-            c.alignment = Alignment(horizontal="center", vertical="center")
+            c.alignment = Alignment(horizontal="left", vertical="center")
             c.border = border
 
     # Save to memory for download
