@@ -182,7 +182,6 @@ for i, val in enumerate(spans):
             c.border = border
 
     # Save to memory for download
-    from io import BytesIO
     buffer = BytesIO()
     wb.save(buffer)
     buffer.seek(0)
@@ -191,6 +190,7 @@ for i, val in enumerate(spans):
         label="⬇️ Download Excel",
         data=buffer,
         file_name=excel_filename,
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        key="download_excel_btn"  # ✅ unique key added
     )
 
