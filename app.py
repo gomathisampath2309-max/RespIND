@@ -129,12 +129,13 @@ if len(table) > 0:
 
     # Fixed: 5 widths instead of 4
     col_split = [
-        table.shape[1] // 4,
-        table.shape[1] // 4,
-        table.shape[1] // 4,
-        table.shape[1] - 1 * (table.shape[1] // 4,
-        table.shape[1] - 3 * (table.shape[1] // 4)
+    table.shape[1] // 5,  # span 1
+    table.shape[1] // 5,  # span 2
+    table.shape[1] // 5,  # span 3
+    table.shape[1] // 5,  # span 4 (empty if needed)
+    table.shape[1] - 4 * (table.shape[1] // 5)  # span 5 gets the remainder
     ]
+
 
     start_col = 1
     for i, val in enumerate(spans):
