@@ -131,7 +131,7 @@ if len(table) > 0:
         table.shape[1] // 4,
         table.shape[1] // 4,
         table.shape[1] - 3 * (table.shape[1] // 4),
-        table.shape[1] - 3 * (table.shape[1] // 4)
+        table.shape[1] - 3 * (table.shape[1] // 3)
     ]
 
     start_col = 1
