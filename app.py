@@ -108,29 +108,11 @@ if len(table) > 0:
     border = Border(top=thin, left=thin, right=thin, bottom=thin)
 
     # Header row 1 (merged)
-    #ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=table.shape[1])
-    #cell = ws.cell(row=1, column=1, value="RespIndNet_Study Specimen Transfer Form (Virology)")
-    #cell.font = Font(bold=True)
-    #cell.alignment = Alignment(horizontal="center", vertical="center")
-    #cell.border = border
-
-    # Define border style
-    thin_border = Border(
-        left=Side(style="thin"),
-        right=Side(style="thin"),
-        top=Side(style="thin"),
-        bottom=Side(style="thin")
-    )
-
-    # Merge header row
     ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=table.shape[1])
     cell = ws.cell(row=1, column=1, value="RespIndNet_Study Specimen Transfer Form (Virology)")
     cell.font = Font(bold=True)
     cell.alignment = Alignment(horizontal="center", vertical="center")
-
-    # Apply border to all cells in merged range
-    for col in range(1, table.shape[1] + 1):
-        ws.cell(row=1, column=col).border = thin_border
+    cell.border = border
 
     # Extra span row (row 2)
     spans = [
@@ -182,6 +164,7 @@ for i, val in enumerate(spans):
             c.border = border
 
     # Save to memory for download
+    from io import BytesIO
     buffer = BytesIO()
     wb.save(buffer)
     buffer.seek(0)
@@ -190,7 +173,6 @@ for i, val in enumerate(spans):
         label="⬇️ Download Excel",
         data=buffer,
         file_name=excel_filename,
-        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        key="download_excel_btn"  # ✅ unique key added
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
