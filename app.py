@@ -79,7 +79,7 @@ table = pd.DataFrame({
     "S.TYPE": merged["type_of_sample"],
     "S.PER IND": merged["sample_sequence"],
     "IND ID": merged.get("child_id", ""),
-    "NAME": "Mrs." + merged["mo_name"].astype(str) + "'s Baby",
+    "NAME": "Mrs." + merged["mo_name"].astype(str) + "'s B",
     "AGE": merged["AGE"],
     "S.C DATE/TIME": merged["submissiondate"],
     "VOL (FIELD)": merged["VOLUME (FIELD)"],
