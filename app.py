@@ -116,34 +116,32 @@ if len(table) > 0:
 
     # Extra span row (row 2)
     spans = [
-    "Sample Shipment Date and Time:",
-    "Field Manager Sign/Initials:",
-    "Virology Staff Sign/Initials:",
-    "",   # empty span
-    "To be filled by Virology"
-]
+        "Sample Shipment Date and Time:",
+        "Field Manager Sign/Initials:",
+        "Virology Staff Sign/Initials:",
+        "To be filled by Virology"
+    ]
 
-# Split table width into 5 parts
-col_split = [
-    table.shape[1] // 5,
-    table.shape[1] // 5,
-    table.shape[1] // 5,
-    table.shape[1] // 5,   # empty span width
-    table.shape[1] - 4 * (table.shape[1] // 5)   # remaining for last span
-]
+    # Fixed: 4 widths instead of 3
+    col_split = [
+        table.shape[1] // 4,
+        table.shape[1] // 4,
+        table.shape[1] // 4,
+        table.shape[1] - 3 * (table.shape[1] // 4)
+    ]
 
-start_col = 1
-for i, val in enumerate(spans):
-    end_col = start_col + col_split[i] - 1
-    ws.merge_cells(start_row=2, start_column=start_col, end_row=2, end_column=end_col)
-    cell = ws.cell(row=2, column=start_col, value=val if val else None)  # leave empty span blank
-    cell.font = Font(bold=True)
-    cell.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
-    # Apply border to merged range
-    for row in range(2, 3):
-        for col in range(start_col, end_col + 1):
-            ws.cell(row=row, column=col).border = border
-    start_col = end_col + 1
+    start_col = 1
+    for i, val in enumerate(spans):
+        end_col = start_col + col_split[i] - 1
+        ws.merge_cells(start_row=2, start_column=start_col, end_row=2, end_column=end_col)
+        cell = ws.cell(row=2, column=start_col, value=val)
+        cell.font = Font(bold=True)
+        cell.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
+        # Apply border to merged range
+        for row in range(2, 3):
+            for col in range(start_col, end_col+1):
+                ws.cell(row=row, column=col).border = border
+        start_col = end_col + 1
 
 
     # Column headers (row 3)
@@ -157,7 +155,7 @@ for i, val in enumerate(spans):
     for i, row in table.iterrows():
         for j, val in enumerate(row, 1):
             c = ws.cell(row=i+4, column=j, value=val)
-            c.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+            c.alignment = Alignment(horizontal="center", vertical="center")
             c.border = border
 
     # Save to memory for download
