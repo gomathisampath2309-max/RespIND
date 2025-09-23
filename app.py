@@ -82,9 +82,9 @@ table = pd.DataFrame({
     "NAME": "Mrs." + merged["mo_name"].astype(str) + "'s Baby",
     "AGE": merged["AGE"],
     "S.C DATE/TIME": merged["submissiondate"],
-    "VOL(FIELD)": merged["VOLUME (FIELD)"],
+    "VOL (FIELD)": merged["VOLUME (FIELD)"],
     "RECEIVED BY": "",
-    "VOL(VIRO)": "",
+    "VOL (VIRO)": "",
     "REMARKS(LYSED/LIPEMIC/ICTERIC/SAMPLE SPILLAGE)": ""
 })
 
