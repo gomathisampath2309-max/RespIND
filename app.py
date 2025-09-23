@@ -126,12 +126,12 @@ if len(table) > 0:
         "To be filled by Virology"
     ]
 
-    # Fixed: 5 widths instead of 4
+    # Fixed: 4 widths instead of 3
     col_split = [
         table.shape[1] // 4,
         table.shape[1] // 4,
         table.shape[1] - 3 * (table.shape[1] // 4),
-        table.shape[1] - 2.5 * (table.shape[1] // 4)
+        table.shape[1] - 3 * (table.shape[1] // 4)
     ]
 
     start_col = 1
