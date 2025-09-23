@@ -130,7 +130,7 @@ if len(table) > 0:
     col_split = [
         table.shape[1] // 4,
         table.shape[1] // 4,
-        table.shape[1] - 2 * (table.shape[1] // 4),
+        table.shape[1] - 3 * (table.shape[1] // 4),
         table.shape[1] - 3 * (table.shape[1] // 4)
     ]
 
