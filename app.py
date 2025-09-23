@@ -132,7 +132,7 @@ if len(table) > 0:
         table.shape[1] // 4,
         table.shape[1] // 4,
         table.shape[1] // 4,
-        table.shape[1] - 3 * (table.shape[1] // 4),
+        table.shape[1] // 4,
         table.shape[1] - 3 * (table.shape[1] // 4)
     ]
 
@@ -144,7 +144,7 @@ if len(table) > 0:
         cell.font = Font(bold=True)
         cell.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
         # Apply border to merged range
-        for row in range(2, 4):
+        for row in range(2, 3):
             for col in range(start_col, end_col+1):
                 ws.cell(row=row, column=col).border = border
         start_col = end_col + 1
